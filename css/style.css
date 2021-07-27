@@ -1,0 +1,38 @@
+.jumbotron{
+    width: 500px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    background-color: #f2f2f2;
+    padding: 40px 30px;
+    border-radius: 10px;
+}
+.jumbotron h3{
+    margin-bottom: 20px;
+}
+.jumbotron table{
+    text-align: center;
+}
+button{
+    display: block;
+    width: 100%;
+}
+.jumbotron button, input, select{
+    margin-top: 10px !important;
+}
+.selecionado{
+    background-color: #8de2f585;
+    border-radius: 5px;
+}
+.negrito{
+    font-weight: bold;
+}
+.legenda{
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+}
+.legenda td{
+    padding: 0 10px;
+}

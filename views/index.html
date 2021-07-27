@@ -1,0 +1,103 @@
+<!DOCTYPE html ng-app="Lista Telefônica">
+<html lang="pt-BR" ng-app="listaTelefonica">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="../css/style.css">
+  <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.css">
+  <script src="../lib/angular/angular.js"></script>
+  <script src="../lib/angular/angular-messages.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/Controllers/listaTelefonicaCtrl.js"></script>
+  <title>Lista Telefônica</title>
+</head>
+
+<body ng-controller="listaTelefonicaCtrl">
+    <div class="jumbotron">
+      <h3 ng-bind="app"></h3>
+      <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?"/> 
+      <hr/>
+      <table ng-show="contatos.length > 0" class="table ">
+        <tr >
+          <th></th>
+          <th><a href="" ng-click="ordenarPor('nome')">Nome</a></th>
+          <th><a href="" ng-click="ordenarPor('telefone')">Telefone</a></th>
+          <th><a href="" ng-click="ordenarPor('telefone')">Operadora</a></th>
+          <th>Tipo</th>
+        </tr>
+        <tr ng-class="{'selecionado negrito': contato.selecionado}"  ng-repeat="contato in contatos  | orderBy: 'nome' | filter:  criterioDeBusca  |  orderBy: criterioDeOrdenacao:direcaoDaOrdenacao | limitTo:30">
+          <td><input type="checkbox" ng-model="contato.selecionado"/></td>
+          <td>{{contato.nome | limitTo: 5}}</td>
+          <td>{{contato.telefone}}</td>  
+          <td>{{contato.operadora.nome}}</td>
+         <td>
+            <div style="width: 20px; height: 20px; border-radius: 50px;" ng-style="{'background-color': contato.tipo.tipo}">
+            </div>
+          </td>
+        </tr>
+      </table>
+      <hr/>
+      <table class="legenda">
+        <td>
+          <div style="width: 20px; height: 20px; border-radius: 50px; background-color:#e88924"></div>
+        </td>
+        <td>Família</td>
+        <td>
+          <div style="width: 20px; height: 20px; border-radius: 50px; background-color:#256ad2"></div>
+        </td>
+        <td> Pessoal</td>
+        <td>
+          <div style="width: 20px; height: 20px; border-radius: 50px; background-color:#25d25a"></div>
+        </td>
+        <td>Trabalho</td>
+      </table>
+     
+      <form name="contatoForm">
+        <input class="form-control" type="text" 
+               ng-model="contato.nome" name="nome" 
+               placeholder="Nome" ng-required="true"  ng-maxlength="10"/>
+        <input class="form-control" type="number" 
+               ng-model="contato.telefone" name="telefone" 
+               placeholder="Telefone" ng-required="true" 
+             />
+        <select 
+              class="form-control" 
+              ng-model="contato.tipo" 
+              ng-options="tipo.nome for tipo in tipos">
+          <option value="">Selecione um tipo</option>
+        </select>
+        <select 
+              class="form-control" 
+              ng-model="contato.operadora" 
+              ng-options=" operadora.nome group by operadora.categoria for operadora in operadoras | orderBy: 'nome'">
+          <option value="">Selecione uma operadora</option>
+        </select>
+      </form>    
+      <div ng-show="contatoForm.nome.$dirty" ng-messages="contatoForm.nome.$error">
+        <div ng-message="required" class="alert alert-danger">
+          Por favor, preencha o campo nome!
+        </div>
+        <div ng-message="maxlength" class="alert alert-danger">
+          O campo nome deve ter no máximo 10 caracteres.
+        </div>
+      </div>
+  
+      <div ng-show="contatoForm.telefone.$error.required && contatoForm.telefone.$dirty" class="alert alert-danger">
+        Por favor, preencha o campo telefone!
+      </div>
+
+      <button class="btn btn-outline-primary btn-block" 
+              ng-disabled="contatoForm.$invalid" 
+              ng-click="adicionarContato(contato)">
+              Adicionar Contato
+      </button>
+      <button class="btn btn-outline-danger btn-block" 
+              ng-disabled="!isContatoSelecionado(contatos)"
+              ng-if="isContatoSelecionado(contatos)"
+              //ng-show="isContatoSelecionado(contatos)"
+              ng-click="apagarContatos(contatos)">
+              Apagar Contato
+      </button>
+    </div>  
+    <!-- <div ng-include="'Footer.html'"></div> -->
+  </body>
+</html>
